@@ -6,11 +6,26 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Reset from "./pages/Reset/Reset";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Detail from "./pages/Detail/Detail";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import Search from "./pages/Search/Search";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: (
+      <ProtectedRoute>
+        <Search />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <ProtectedRoute>
+        <Search />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",
@@ -26,7 +41,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/search/:showId",
+    element: <Detail />,
   },
 ]);
 function App() {

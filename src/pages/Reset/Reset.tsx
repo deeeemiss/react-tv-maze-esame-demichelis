@@ -29,7 +29,7 @@ function Reset() {
           Don't have an account? <Link to="/register">Register now.</Link>
         </div>
         <div>
-          Already have an account? <Link to="/">Login now.</Link>
+          Already have an account? <Link to="/login">Login now.</Link>
         </div>
       </div>
     </div>
