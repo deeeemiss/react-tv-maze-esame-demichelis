@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
@@ -7,7 +8,12 @@ const ProtectedRoute = ({ children }: any) => {
   const [user, loading, error] = useAuthState(auth);
 
   if (!user && loading) {
-    return <div className="loading">Loading...</div>;
+    return (
+      <div className="loading">
+        Loading...
+        <CircularProgress />
+      </div>
+    );
   }
   if (!user && !loading) {
     return <Navigate to="/login" />;

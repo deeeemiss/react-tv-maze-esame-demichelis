@@ -69,13 +69,16 @@ const DetailPage = () => {
       </Grid>
     </Grid>
   ) : (
-    <CircularProgress
+    <div
       style={{
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
       }}
-    />
+    >
+      <CircularProgress />
+    </div>
   );
 };
 
