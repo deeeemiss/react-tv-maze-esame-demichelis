@@ -9,6 +9,11 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Detail from "./pages/Detail/Detail";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import Search from "./pages/Search/Search";
+import Favourites from "./pages/Favourites/Favourites";
+import NowWatching from "./pages/NowWatching/NowWatching";
+import { RootState } from "./store";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "./redux/theme/darkmode.slice";
 
 const router = createBrowserRouter([
   {
@@ -48,15 +53,41 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/favourites/",
+    element: (
+      <ProtectedRoute>
+        <Favourites />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/watching/",
+    element: (
+      <ProtectedRoute>
+        <NowWatching />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/search/:showId",
     element: <Detail />,
   },
 ]);
+
 function App() {
+  const themeColor = useSelector((state: RootState) => {
+    return state.theme.themeColor;
+  });
+
+  const dispatch = useDispatch();
+
   return (
-    <>
+    <div className={`${themeColor ? "lightTheme" : "darkTheme"}`}>
+      <button onClick={() => dispatch(toggleTheme())} className="button">
+        Theme
+      </button>
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 }
 

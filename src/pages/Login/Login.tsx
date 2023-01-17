@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { writeUserData } from "../../db/db";
 import {
   auth,
   logInWithEmailAndPassword,
   signInWithGoogle,
+  user,
 } from "../../firebase";
 import "./Login.css";
 
@@ -12,14 +14,23 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
+  const [item, setItem] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/dashboard");
+    if (user) {
+      navigate("/dashboard");
+      writeUserData(user.email!, user.uid);
+      console.log(user.uid);
+      localStorage.setItem("user", user.uid);
+      console.log(user.email);
+    }
   }, [user, loading]);
+
   return (
     <div className="login">
       <div className="login__container">

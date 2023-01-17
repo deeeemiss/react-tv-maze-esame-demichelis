@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.lightTheme {
+  background-color: white;
+  color: black;
+}
+
+.darkTheme {
+  background-color: black;
+  color: white;
+}
+
+body {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.button {
+  background-color: #282c34;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 20px 0 0 10px;
+  cursor: pointer;
+}

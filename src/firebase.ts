@@ -8,10 +8,13 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDfeYIHvHfkFAeaQE7Ma-ekbr6gpkdgSOE",
   authDomain: "react-tvmaze-demichelis.firebaseapp.com",
+  databaseURL:
+    "https://react-tvmaze-demichelis-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "react-tvmaze-demichelis",
   storageBucket: "react-tvmaze-demichelis.appspot.com",
   messagingSenderId: "722868754770",
@@ -22,10 +25,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+export const user = {
+  uid: "",
+  email: "",
+};
+
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
+    user.uid = res.user.uid;
+    user.email = res.user.email!;
   } catch (err: any) {
     console.error(err);
     alert(err.message);
@@ -48,7 +57,8 @@ const registerWithEmailAndPassword = async (
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
+    user.uid = res.user.uid;
+    user.email = res.user.email!;
   } catch (err: any) {
     console.error(err);
     alert(err.message);
@@ -76,4 +86,5 @@ export {
   registerWithEmailAndPassword,
   sendPasswordReset,
   logout,
+  app,
 };
