@@ -14,6 +14,7 @@ import NowWatching from "./pages/NowWatching/NowWatching";
 import { RootState } from "./store";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "./redux/theme/darkmode.slice";
+import { UserContextProvider } from "./context/UserContext";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/search/:showId",
-    element: <Detail />,
+    element: (
+      <ProtectedRoute>
+        <Detail />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
@@ -82,12 +87,14 @@ function App() {
   const dispatch = useDispatch();
 
   return (
-    <div className={`${themeColor ? "lightTheme" : "darkTheme"}`}>
-      <button onClick={() => dispatch(toggleTheme())} className="button">
-        Theme
-      </button>
-      <RouterProvider router={router} />
-    </div>
+    <UserContextProvider>
+      <div className={`${themeColor ? "lightTheme" : "darkTheme"}`}>
+        <button onClick={() => dispatch(toggleTheme())} className="button">
+          Theme
+        </button>
+        <RouterProvider router={router} />
+      </div>
+    </UserContextProvider>
   );
 }
 

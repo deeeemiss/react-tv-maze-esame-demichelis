@@ -7,7 +7,7 @@ import {
   logInWithEmailAndPassword,
   signInWithGoogle,
   user,
-} from "../../firebase";
+} from "../../firebase/firebase";
 import "./Login.css";
 
 function Login() {
@@ -26,7 +26,6 @@ function Login() {
       navigate("/dashboard");
       writeUserData(user.email!, user.uid);
       console.log(user.uid);
-      localStorage.setItem("user", user.uid);
       console.log(user.email);
     }
   }, [user, loading]);

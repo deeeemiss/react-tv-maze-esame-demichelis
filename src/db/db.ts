@@ -1,58 +1,30 @@
-import {
-  getDatabase,
-  onValue,
-  ref,
-  remove,
-  set,
-  update,
-} from "firebase/database";
-import { ShowType } from "../api";
-import { app } from "../firebase";
+import { getDatabase, ref, remove, set, update } from "firebase/database";
+import { Show } from "../api";
+import { CurrentUserConsumer, UserContext } from "../context/UserContext";
 
-export const writeUserData = (email: string, uid: string) => {
-  const db = getDatabase(app);
+export const writeUserData = (email: any, uid: any) => {
+  const db = getDatabase();
   set(ref(db, "users/" + uid), {
     email: email,
   });
-  console.log("User data written!");
-  console.log("User ID: " + uid);
-  console.log("User email: " + email);
 };
 
-export const addFavourite = (show: ShowType, uid: string) => {
-  const db = getDatabase(app);
+export const addFavourite = (show: Show, uid: string) => {
+  const db = getDatabase();
   update(ref(db, "users/" + uid + "/favorites"), { [show.id]: show });
 };
 
-export const removeFavourite = (show: ShowType, uid: string) => {
-  const db = getDatabase(app);
-  remove(ref(db, "users/" + uid + "/favorites" + show.id));
-};
-
-export const getUserFavorites = (uid: string) => {
-  const db = getDatabase(app);
-  onValue(ref(db, "users/" + uid + "/favorites"), (snapshot) => {
-    const data = snapshot.val();
-    console.log(data);
-    return data;
-  });
-};
-
-/* export const addToWatchlist = (show: ShowType, uid: string) => {
+export const removeFavourite = (show: Show, uid: string) => {
   const db = getDatabase();
-  update(ref(db, "users/" + uid + "/watchlist"), { [show.id]: show });
+  remove(ref(db, "users/" + uid + "/favorites/" + show.id));
 };
 
-export const removeFromWatchlist = (show: ShowType, uid: string) => {
+export const addToWatch = (show: Show, uid: string) => {
   const db = getDatabase();
-  remove(ref(db, "users/" + uid + "watchlist" + show.id));
+  update(ref(db, "users/" + uid + "/watching"), { [show.id]: show });
 };
 
-export const getWatchlist = (uid: string) => {
+export const removeFromWatch = (uid: string) => {
   const db = getDatabase();
-  onValue(ref(db, "users/" + uid + "/watchlist"), (snapshot) => {
-    const data = snapshot.val();
-    console.log(data);
-    return data;
-  });
-}; */
+  remove(ref(db, "users/" + uid + "/watching/"));
+};

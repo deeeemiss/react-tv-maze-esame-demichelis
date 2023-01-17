@@ -8,8 +8,8 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDfeYIHvHfkFAeaQE7Ma-ekbr6gpkdgSOE",
   authDomain: "react-tvmaze-demichelis.firebaseapp.com",
@@ -24,6 +24,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+export const db = getDatabase(app);
 
 export const user = {
   uid: "",

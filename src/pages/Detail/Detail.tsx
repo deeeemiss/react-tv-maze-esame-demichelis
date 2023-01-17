@@ -51,14 +51,16 @@ const DetailPage = () => {
             alt={showDetail.image}
           />
           <CardContent>
-            <Typography variant="body1">
+            <Typography variant={"body1"} component={"span"}>
               <Interweave content={showDetail.summary} />
             </Typography>
             <Typography style={{ marginBottom: 10 }}>
               <strong>First aired:</strong> {showDetail.startDate}
             </Typography>
-            {showDetail.genres.map((genre) => (
-              <span id="genre">{genre}</span>
+            {showDetail.genres?.map((genre, i) => (
+              <span id="genre" key={i}>
+                {genre}
+              </span>
             ))}
             <Typography id="rating">{showDetail.avgRating}</Typography>
             <Typography id="language">{showDetail.language}</Typography>
@@ -67,7 +69,13 @@ const DetailPage = () => {
       </Grid>
     </Grid>
   ) : (
-    <CircularProgress />
+    <CircularProgress
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    />
   );
 };
 

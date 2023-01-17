@@ -1,24 +1,18 @@
 import { Button, FormControl, Grid, InputBase, Paper } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getShowsBySearch, ShowType } from "../../api";
+import { getShowsBySearch, Show } from "../../api";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./Favourites.css";
 import Card from "../../components/Card/Card";
-import { getUserFavorites } from "../../db/db";
-import { auth, user } from "../../firebase";
+import { auth, user } from "../../firebase/firebase";
+import { CurrentUserConsumer } from "../../context/UserContext";
+import useFavorite from "../../hooks/useFavorite";
 
 const Favourites = () => {
   const navigate = useNavigate();
-  const [shows, setShows] = useState<ShowType[]>([]);
-  const [user] = useAuthState(auth);
-
-  //add the handleFavourites function here and pass it to the Card component
-  console.log(getUserFavorites(user?.uid!));
-
-  useEffect(() => {
-    getUserFavorites(user?.uid!);
-  }, []);
+  const { currentUser } = CurrentUserConsumer();
+  const showsFav = useFavorite(currentUser?.uid);
 
   return (
     <>
@@ -34,9 +28,10 @@ const Favourites = () => {
       <Grid container justifyContent="center" alignItems="center">
         <h1>Favourites</h1>
         <Grid item style={{ padding: "2em" }} sm={8}>
-          {shows.map((el) => (
-            <Card show={el} key={el.id} />
-          ))}
+          {showsFav &&
+            Object.keys(showsFav).map((key, index) => (
+              <Card show={showsFav[key]} key={index} />
+            ))}
         </Grid>
       </Grid>
     </>

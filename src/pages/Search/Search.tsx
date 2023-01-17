@@ -1,49 +1,33 @@
 import { Button, FormControl, Grid, InputBase, Paper } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { getShowsBySearch, ShowType } from "../../api";
+import { getShowsBySearch, Show } from "../../api/index";
 import { Link, useSearchParams } from "react-router-dom";
 import "./Search.css";
 import Card from "../../components/Card/Card";
-import { getUserFavorites } from "../../db/db";
-
-//TODO: fix search bar and fix desktop view
+import { WidthFull } from "@mui/icons-material";
 
 const Search = () => {
-  const [currentSearch, setCurrentSearch] = useSearchParams();
-  const [shows, setShows] = useState<ShowType[]>([]);
-  const uid = localStorage.getItem("uid");
+  const [query, setQuery] = useState("");
+  const [show, setShow] = useState<Show[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleOnSearchChange = useCallback(
-    (query: string) => {
-      setCurrentSearch({ search: query });
-    },
-    [setCurrentSearch]
-  );
-
-  const isSearchButtonDisabled = () =>
-    currentSearch.get("search")?.trim().length === 0;
-
-  const handleOnSearch = () => {
-    getShowsBySearch(currentSearch?.get("search") || "").then((res) =>
-      setShows(res)
+  const handleSearch = () => {
+    getShowsBySearch(searchParams?.get("search") || "").then((res) =>
+      setShow(res)
     );
   };
 
   useEffect(() => {
-    const currentSearchStr = currentSearch?.get("search")?.trim();
-    if (
-      !!currentSearchStr &&
-      currentSearchStr.length > 0 &&
-      shows.length === 0
-    ) {
-      handleOnSearch();
-    }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    handleSearch();
+  }, [searchParams]);
 
-  const getFavorite = () => {
-    console.log(getUserFavorites(uid!));
+  const getQuery = (e: any) => {
+    setQuery(e.target.value);
+    console.log(e.target.value);
   };
+
+  /*   const isSearchButtonDisabled = () =>
+    searchParams.get("search")?.trim().length === 0; */
 
   return (
     <>
@@ -58,32 +42,32 @@ const Search = () => {
       </Link>
       <Grid container justifyContent="center" alignItems="center">
         <h1>TV Maze</h1>
-        <Grid
-          item
-          style={{ padding: "2em", outline: "1px solid red", width: "100%" }}
-        >
+        <Grid item style={{ padding: "2em", width: "100%" }}>
           <Paper
             component="form"
             sx={{ display: "flex", alignItems: "center" }}
-            style={{ padding: "2em" }}
+            style={{
+              padding: "1em",
+              boxShadow:
+                "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
+            }}
             autoComplete="off"
             onSubmit={(e) => {
               e.preventDefault();
             }}
           >
-            <FormControl>
+            <FormControl style={{ width: "90%" }}>
               <InputBase
                 id="outlined-basic"
                 placeholder="Search by title..."
-                onChange={(e) => handleOnSearchChange(e.target.value)}
-                value={currentSearch.get("search")}
+                onChange={getQuery}
+                value={query}
                 autoFocus
               />
             </FormControl>
             <FormControl>
               <Button
-                disabled={isSearchButtonDisabled()}
-                onClick={handleOnSearch}
+                onClick={() => setSearchParams({ search: query })}
                 style={{
                   marginLeft: "1em",
                   boxShadow:
@@ -95,8 +79,16 @@ const Search = () => {
             </FormControl>
           </Paper>
         </Grid>
-        <Grid item style={{ padding: "2em" }} sm={8}>
-          {shows.map((el) => (
+        <Grid
+          item
+          style={{
+            padding: "2em",
+            display: "flex",
+            flexWrap: "wrap",
+          }}
+          sm={12}
+        >
+          {show.map((el, i) => (
             <Card show={el} key={el.id} />
           ))}
         </Grid>
