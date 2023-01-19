@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import "./Search.css";
 import Card from "../../components/Card/Card";
 import { WidthFull } from "@mui/icons-material";
+import React from "react";
 
 const Search = () => {
   const [query, setQuery] = useState("");
