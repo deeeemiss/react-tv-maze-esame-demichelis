@@ -27,7 +27,11 @@ const Favourites = () => {
       </Link>
       <Grid container justifyContent="center" alignItems="center">
         <h1>Favourites</h1>
-        <Grid item style={{ padding: "2em" }} sm={8}>
+        <Grid
+          item
+          style={{ padding: "2em", display: "flex", flexWrap: "wrap" }}
+          sm={12}
+        >
           {showsFav &&
             Object.keys(showsFav).map((key, index) => (
               <Card show={showsFav[key]} key={index} />
