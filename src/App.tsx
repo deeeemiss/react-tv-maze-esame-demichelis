@@ -88,7 +88,10 @@ function App() {
 
   return (
     <UserContextProvider>
-      <div className={`${themeColor ? "lightTheme" : "darkTheme"}`}>
+      <div
+        className={`${themeColor ? "lightTheme" : "darkTheme"}`}
+        style={{ minHeight: "100vh" }}
+      >
         <button onClick={() => dispatch(toggleTheme())} className="button">
           Theme
         </button>
